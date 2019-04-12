@@ -20,6 +20,8 @@ int btnTwoHandled = 0;
 int code[] = {1, 1};
 int codeTry[2];
 
+int startTime = 0;
+
 int state = LOCKED;
 
 void loop()
@@ -43,6 +45,7 @@ void loop()
       if(sensor == HIGH) {
         digitalWrite(7, LOW);
         state = WAITFORCLICKONE;
+        startTime = millis();
       }
       break;
     
@@ -63,6 +66,11 @@ void loop()
          digitalWrite(4, LOW);
          delay(200);
          state = WAITFORCLICKTWO;
+      }
+    
+      if(millis() - startTime > 10000) {
+         digitalWrite(4, LOW);
+         state = LOCKED;
       }
       break;
     
@@ -89,6 +97,10 @@ void loop()
          delay(200);
          digitalWrite(4, LOW);
          state = CHECKING;
+      }
+      if(millis() - startTime > 10000) {
+         digitalWrite(4, LOW);
+         state = LOCKED;
       }
       break;
     
